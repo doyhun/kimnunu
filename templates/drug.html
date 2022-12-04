@@ -1,0 +1,112 @@
+{% extends 'drug_base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="starter-template">
+        <h1>HyperP Therapy Protocol</h1>
+        <p class="lead"><br> Push the random button or fill in the text box and push the submit button</button></button></p>
+    </div>
+</div><!-- /.container -->
+<div class="container">
+    <hr color="black">
+    <form method="post" action="/drug">
+        <div class="col-md-12">
+            <h3>
+                이전
+            </h3>
+        </div>
+        <div class="col-md-2">
+            <label for="pre_P" class="form-label">Phosphorus</label>
+            <input type='text' class="form-control" name="pre_Phosphorus" id="pre_Phosphorus">
+        </div>
+        <div class="col-md-2">
+            <label for="pre_Ferritin" class="form-label">Ferritin</label>
+            <input class="form-control" id="pre_Ferritin" name="pre_Ferritin">
+        </div>
+        <div class="col-md-2">
+            <label for="pre_SEVEL" class="form-label">SEVEL</label>
+            <input class="form-control" id="pre_SEVEL" name="pre_SEVEL">
+        </div>
+        <div class="col-md-2">
+            <label for="pre_LACO" class="form-label">LACO</label>
+            <input class="form-control" id="pre_LACO" name="pre_LACO">
+        </div>
+        <div class="col-md-3">
+            <label for="pre_VELPORO" class="form-label">Velporo</label>
+            <input class="form-control" id="pre_Velporo" name="pre_Velporo">
+        </div>
+        <div class="col-md-12">
+            <h3>
+                현재
+            </h3>
+        </div>
+        <div class="col-md-2">
+            <label for="P" class="form-label">Phosphorus</label>
+            <input class="form-control" id="Phosphorus" name="Phosphorus">
+        </div>
+        <div class="col-md-2">
+            <label for="Ferritin" class="form-label">Ferritin</label>
+            <input class="form-control" id="Ferritin" name="Ferritin">
+        </div>
+        <div class="col-md-2">
+            <label for="SEVEL" class="form-label">SEVEL</label>
+            <input class="form-control" id="SEVEL" name="SEVEL" style="border-color:black;">
+        </div>
+        <div class="col-md-2">
+            <label for="LACO" class="form-label">LACO</label>
+            <input class="form-control" id="LACO" name="LACO" style="border-color:black;">
+        </div>
+        <div class="col-md-3">
+            <label for="VELPORO" class="form-label">VELPORO</label>
+            <input class="form-control" id="VELPORO" name="VELPORO" style="border-color:black;">
+        </div>
+        <div class="col-md-12" style="padding-top: 20px;">
+            <button type="button" class="btn btn-primary" onclick="doAction()" >random</button>
+            <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+    </form>
+</div>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script >
+    {% for key, value in result.items() %}
+        $({{ key }}).val({{ value }})
+    {% endfor %}
+    function doAction() {
+        var pp = rand_c(5, 6)
+        var Ferr = rand_c(490, 510)
+        var medi = rand_medi(pp, Ferr)
+        $("#pre_Phosphorus").val(pp)
+        $("#pre_Ferritin").val(Ferr)
+        $("#pre_SEVEL").val(medi[0])
+        $("#pre_LACO").val(medi[1])
+        $("#pre_Velporo").val(medi[2])
+        $("#Phosphorus").val(rand_c(5, 6))
+        $("#Ferritin").val(rand_c(490, 510))
+      }  
+    function rand_c(min, max) {
+        return ((Math.random() * (max - min + 1)) + min).toFixed(1)
+    }
+    function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+    function rand_medi(pp, Ferr) {
+        var sevel = 0
+        var laco = 0
+        var velpo = 0
+        if (pp >= 5.5 & pp < 5.6)
+        {
+            sevel = 2 + rand(-1, 6)
+        }
+        else if (pp >= 5.6 & Ferr >= 500){
+            laco = 2 + rand(-1, 3)
+        }
+        else if (pp >= 5.6 & Ferr < 500){
+            velpo = 2 + rand(-1, 4)
+        }
+        return [sevel, laco, velpo] 
+    }
+
+</script>
+
+{% endblock %}
